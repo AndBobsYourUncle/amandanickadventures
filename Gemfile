@@ -10,6 +10,10 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
 
+gem 'bootstrap', '~> 4.0.0.beta'
+
+gem 'jquery-rails'
+
 gem 'haml-rails', '~> 0.9'
 gem 'hamlit'
 

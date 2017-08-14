@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+  nginx-server:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - back
+      - front
+
+  lets-encrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: lets-encrypt
+    restart: always
+    depends_on:
+      - nginx-server
+    volumes:
+      - ./certs:/etc/nginx/certs:rw
+    volumes_from:
+      - nginx-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - back
+      - front
+
+  photo-site:
+    build: ./
+    image: andbobsyouruncle/our-photo-library
+    command: bash -c "rails-init && /sbin/my_init"
+    container_name: photo-site
+    restart: always
+    networks:
+      - front
+      - back
+    environment:
+      - VIRTUAL_HOST=${WEBSITE_HOSTNAME}
+      - VIRTUAL_PORT=443
+      - LETSENCRYPT_HOST=${WEBSITE_HOSTNAME}
+      - LETSENCRYPT_EMAIL=${WEBSITE_EMAIL}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+networks:
+  front:
+    external:
+      name: traffic_front
+  back:
+    external:
+      name: traffic_back

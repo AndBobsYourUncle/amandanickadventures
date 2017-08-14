@@ -1,19 +1,20 @@
-FROM phusion/passenger-ruby24:0.9.20
+FROM phusion/passenger-ruby24:0.9.24
 
 ENV HOME /root
 
 CMD ["/sbin/my_init"]
 
-# Set the default Ruby version for app
-RUN bash -lc 'rvm get head --auto-dotfiles'
-RUN bash -lc 'rvm install ruby-2.4.1'
-RUN bash -lc 'rvm --default use ruby-2.4.1'
-RUN bash -lc 'gem install bundle'
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN bash -lc 'apt-get update'
+RUN bash -lc 'apt-get install -y tzdata'
+RUN bash -lc 'ln -fs /usr/share/zoneinfo/America/Los_Angeles /etc/localtime'
+RUN bash -lc 'dpkg-reconfigure --frontend noninteractive tzdata'
 
 # Build the bundle before adding app, to cache bundle in Docker image
 COPY Gemfile* /tmp/
 WORKDIR /tmp
-RUN bash -lc 'rvm-exec 2.4.1 bundle install --jobs 8'
+RUN bash -lc 'bundle install --jobs 8'
 
 # Enable Nginx and Passenger
 RUN rm -f /etc/service/nginx/down

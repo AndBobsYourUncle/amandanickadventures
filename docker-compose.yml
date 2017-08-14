@@ -2,7 +2,7 @@ version: '2'
 
 services:
   nginx-server:
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:latest
     container_name: nginx-proxy
     restart: always
     ports:
@@ -19,7 +19,7 @@ services:
       - front
 
   lets-encrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    image: jrcs/letsencrypt-nginx-proxy-companion:latest
     container_name: lets-encrypt
     restart: always
     depends_on:
@@ -34,9 +34,38 @@ services:
       - back
       - front
 
+  thumbor:
+    image: apsl/thumbor:latest
+    volumes:
+      - logs:/logs
+      - data:/data
+    container_name: thumbor
+    restart: always
+    networks:
+      - front
+      - back
+    environment:
+      - VIRTUAL_HOST=${THUMBOR_HOSTNAME}
+      - VIRTUAL_PORT=443
+      - LETSENCRYPT_HOST=${THUMBOR_HOSTNAME}
+      - LETSENCRYPT_EMAIL=${WEBSITE_EMAIL}
+      - REDIS_STORAGE_SERVER_HOST=redis
+      - REDIS_STORAGE_SERVER_PORT=6379
+      - REDIS_STORAGE_SERVER_DB=0
+      - REDIS_QUEUE_SERVER_HOST=redis
+      - REDIS_QUEUE_SERVER_PORT=6379
+      - REDIS_QUEUE_SERVER_DB=0
+
+  redis:
+    image: redis:latest
+    restart: always
+    networks:
+      - front
+      - back
+
   photo-site:
     build: ./
-    image: andbobsyouruncle/our-photo-library
+    image: andbobsyouruncle/photo-site
     command: bash -c "rails-init && /sbin/my_init"
     container_name: photo-site
     restart: always
@@ -44,11 +73,19 @@ services:
       - front
       - back
     environment:
+      - THUMBOR_URL=${THUMBOR_URL}
       - VIRTUAL_HOST=${WEBSITE_HOSTNAME}
       - VIRTUAL_PORT=443
       - LETSENCRYPT_HOST=${WEBSITE_HOSTNAME}
       - LETSENCRYPT_EMAIL=${WEBSITE_EMAIL}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+
+volumes:
+  data:
+    driver: local
+  logs:
+    driver: local
+
 networks:
   front:
     external:

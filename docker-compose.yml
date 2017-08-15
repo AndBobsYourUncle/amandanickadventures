@@ -96,6 +96,7 @@ services:
       - SECRET_KEY_BASE=${FB_PHOTO_SITE_SECRET_KEY_BASE}
       - FB_APP_ID=${FB_APP_ID}
       - FB_APP_SECRET=${FB_APP_SECRET}
+      - FB_PHOTO_SITE_ADMINS=${FB_PHOTO_SITE_ADMINS}
 
 volumes:
   data:

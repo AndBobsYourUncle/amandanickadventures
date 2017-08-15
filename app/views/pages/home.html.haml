@@ -25,6 +25,8 @@
     %p
       %a.btn.btn-primary{:href => "#"} Main call to action
       %a.btn.btn-secondary{:href => "#"} Secondary action
+      = link_to('Logout', destroy_user_session_path)
+      = @friends.inspect
 .album.text-muted
   .container
     .row

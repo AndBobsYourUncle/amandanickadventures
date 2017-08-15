@@ -42,6 +42,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'devise'
+gem 'koala'
 gem 'omniauth-facebook'
 
 group :development, :test do

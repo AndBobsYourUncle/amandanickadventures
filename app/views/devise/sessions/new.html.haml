@@ -1,5 +1,5 @@
-.container
-  .jumbotron
-    .row.justify-content-md-center
-      .col-md-auto
-        = link_to image_tag('fb_login.png', width: 300), user_facebook_omniauth_authorize_path
+.inner.cover
+  %h1.cover-heading Welcome!
+  %p.lead Please login to Facebook to confirm you're a friend of ours so that you can share our memories.
+  %p.lead
+    %a.btn.btn-lg.btn-primary{href: user_facebook_omniauth_authorize_path} Login with Facebook

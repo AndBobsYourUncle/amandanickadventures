@@ -7,21 +7,21 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    .navbar.navbar-dark.bg-dark
-      .container.d-flex.justify-content-between
-        %a.navbar-brand{:href => "#"} Album
-        .user_options
-          - if user_signed_in?
-            = link_to 'Logout', destroy_user_session_path, class: 'btn btn-secondary'
-    = yield
-    %footer.text-muted
-      .container
-        %p.float-right
-          %a{:href => "#"} Back to top
-        %p Album example is © Bootstrap, but please download and customize it for yourself!
-        %p
-          New to Bootstrap?
-          %a{:href => "../../"} Visit the homepage
-          or read our
-          = succeed "." do
-            %a{:href => "../../getting-started/"} getting started guide
+    .site-wrapper
+      .site-wrapper-inner
+        .cover-container
+          .masthead.clearfix
+            .inner
+              %h3.masthead-brand Facebook Photo Site
+              %nav.nav.nav-masthead
+                - if user_signed_in?
+                  = link_to 'Logout', destroy_user_session_path, class: 'btn btn-secondary'
+                / %a.nav-link.active{:href => "#"} Home
+                / %a.nav-link{:href => "#"} Features
+                / %a.nav-link{:href => "#"} Contact
+          = yield
+          .mastfoot
+            .inner
+              %p
+                Created by
+                = link_to 'AndBobsYourUncle', 'https://github.com/AndBobsYourUncle'

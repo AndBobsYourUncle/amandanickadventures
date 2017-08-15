@@ -64,11 +64,26 @@ services:
       - front
       - back
 
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    volumes:
+      - /var/run/postgresql
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD:
+
   facebook-photo-site:
     image: andbobsyouruncle/facebook-photo-site:latest
     command: bash -c "rails-init && /sbin/my_init"
     container_name: facebook-photo-site
     restart: always
+    depends_on:
+      - postgres
+    volumes_from:
+      - postgres
     networks:
       - front
       - back

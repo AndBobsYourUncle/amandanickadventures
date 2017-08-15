@@ -46,7 +46,7 @@ services:
       - back
     environment:
       - VIRTUAL_HOST=${THUMBOR_HOSTNAME}
-      - VIRTUAL_PORT=443
+      - VIRTUAL_PORT=8000
       - LETSENCRYPT_HOST=${THUMBOR_HOSTNAME}
       - LETSENCRYPT_EMAIL=${FB_PHOTO_SITE_EMAIL}
       - REDIS_STORAGE_SERVER_HOST=redis

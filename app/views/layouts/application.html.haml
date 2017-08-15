@@ -7,4 +7,35 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
+    #navbarHeader.collapse.bg-dark
+      .container
+        .row
+          .col-sm-8.py-4
+            %h4.text-white About
+            %p.text-muted Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.
+          .col-sm-4.py-4
+            %h4.text-white Contact
+            %ul.list-unstyled
+              %li
+                %a.text-white{:href => "#"} Follow on Twitter
+              %li
+                %a.text-white{:href => "#"} Like on Facebook
+              %li
+                %a.text-white{:href => "#"} Email me
+    .navbar.navbar-dark.bg-dark
+      .container.d-flex.justify-content-between
+        %a.navbar-brand{:href => "#"} Album
+        %button.navbar-toggler{"aria-controls" => "navbarHeader", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarHeader", "data-toggle" => "collapse", :type => "button"}
+          %span.navbar-toggler-icon
     = yield
+    %footer.text-muted
+      .container
+        %p.float-right
+          %a{:href => "#"} Back to top
+        %p Album example is © Bootstrap, but please download and customize it for yourself!
+        %p
+          New to Bootstrap?
+          %a{:href => "../../"} Visit the homepage
+          or read our
+          = succeed "." do
+            %a{:href => "../../getting-started/"} getting started guide

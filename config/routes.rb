@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   end
 
   root to: 'pages#home'
+
+  get '/not_a_friend' => 'pages#not_a_friend'
 end

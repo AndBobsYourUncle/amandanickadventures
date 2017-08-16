@@ -45,6 +45,8 @@ gem 'devise'
 gem 'koala'
 gem 'omniauth-facebook'
 
+gem 'pundit'
+
 group :development, :test do
   gem 'pry'
 

@@ -5,6 +5,15 @@ class User < ApplicationRecord
 
   validates :email, presence: true
 
+  def friend?
+    facebook = Koala::Facebook::API.new(fb_token)
+    @friends = facebook.get_connections('me', 'friends')
+
+    admin_friend_users = User.where(uid: @friends.map { |f| f['id'] }, admin: true)
+
+    admin_friend_users.any?
+  end
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email

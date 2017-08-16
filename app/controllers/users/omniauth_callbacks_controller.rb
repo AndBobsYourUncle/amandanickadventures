@@ -11,7 +11,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session['facebook.token'] = request.env['omniauth.auth'].credentials.token
     else
       session['devise.facebook_data'] = request.env['omniauth.auth']
-      redirect_to new_user_registration_url
+      redirect_to new_user_session_url
     end
   end
 

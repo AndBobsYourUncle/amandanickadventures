@@ -29,7 +29,7 @@ ActiveAdmin.register Image do
     columns do
       column do
         div do
-          image_tag(image.image.url(:medium))
+          image_tag("#{ENV['THUMBOR_URL']}/unsafe/700x0/https:#{image.image.url}")
         end
       end
       column do

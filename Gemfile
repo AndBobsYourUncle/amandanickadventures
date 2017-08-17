@@ -47,6 +47,8 @@ gem 'omniauth-facebook'
 
 gem 'pundit'
 
+gem 'activeadmin'
+
 group :development, :test do
   gem 'pry'
 

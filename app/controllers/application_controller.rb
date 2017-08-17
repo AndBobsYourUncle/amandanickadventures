@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   rescue_from Koala::Facebook::AuthenticationError, with: :user_not_authorized
   rescue_from Pundit::NotAuthorizedError, with: :user_not_friend
 
+  def access_denied _auth_error = nil
+    redirect_to root_path
+  end
+
   def user_not_authorized _auth_error = nil
     flash[:alert] = 'You need to login with Facebook to continue.'
 

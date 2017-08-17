@@ -14,11 +14,11 @@
             .inner
               %h3.masthead-brand Facebook Photo Site
               %nav.nav.nav-masthead
+                %a.nav-link.active{:href => "#"} Home
                 - if user_signed_in?
-                  = link_to 'Logout', destroy_user_session_path, class: 'btn btn-secondary'
-                / %a.nav-link.active{:href => "#"} Home
-                / %a.nav-link{:href => "#"} Features
-                / %a.nav-link{:href => "#"} Contact
+                  - if current_user.admin?
+                    %a.nav-link{href: admin_root_path} Admin
+                  %a.nav-link{href: destroy_user_session_path} Logout
           = yield
           .mastfoot
             .inner

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Album do
-  # menu parent: 'Albums', label: 'Job Titles', priority: 3
+  menu parent: 'Albums', label: 'Albums', priority: 3
 
   permit_params :name
 

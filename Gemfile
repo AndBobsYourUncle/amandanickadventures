@@ -49,6 +49,9 @@ gem 'pundit'
 
 gem 'activeadmin'
 
+gem 'aws-sdk', '~> 2.3'
+gem 'paperclip'
+
 group :development, :test do
   gem 'pry'
 

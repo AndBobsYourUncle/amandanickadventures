@@ -11,6 +11,8 @@ RUN bash -lc 'apt-get install -y tzdata'
 RUN bash -lc 'ln -fs /usr/share/zoneinfo/America/Los_Angeles /etc/localtime'
 RUN bash -lc 'dpkg-reconfigure --frontend noninteractive tzdata'
 
+RUN bash -lc 'apt-get install imagemagick -y'
+
 # Build the bundle before adding app, to cache bundle in Docker image
 COPY Gemfile* /tmp/
 WORKDIR /tmp

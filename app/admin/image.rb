@@ -14,7 +14,7 @@ ActiveAdmin.register Image do
     selectable_column
 
     column '' do |image|
-      link_to image_tag(image.image.url(:thumb)), admin_image_path(image)
+      link_to image_tag(image.small_thumb_url), admin_image_path(image)
     end
 
     column :name
@@ -28,8 +28,19 @@ ActiveAdmin.register Image do
   show do |image|
     columns do
       column do
+        div 'Original:'
         div do
-          image_tag("#{ENV['THUMBOR_URL']}/unsafe/700x0/https:#{image.image.url}")
+          image_tag image.medium_url
+        end
+
+        div 'Thumbnail:'
+        div do
+          image_tag image.thumb_url
+        end
+
+        div 'Small Thumbnail:'
+        div do
+          image_tag image.small_thumb_url
         end
       end
       column do
@@ -53,7 +64,7 @@ ActiveAdmin.register Image do
     inputs 'Details' do
       f.input :name, minimum_input_length: 1
       f.input :caption
-      f.input :image, hint: image_tag(f.object.image.url(:thumb))
+      f.input :image, hint: image_tag(f.object.small_thumb_url)
     end
   end
 end

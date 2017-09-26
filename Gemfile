@@ -52,6 +52,8 @@ gem 'activeadmin'
 gem 'aws-sdk', '~> 2.3'
 gem 'paperclip'
 
+gem 'ruby-thumbor'
+
 group :development, :test do
   gem 'pry'
 

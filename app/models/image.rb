@@ -1,14 +1,52 @@
 # frozen_string_literal: true
 
+require 'ruby-thumbor'
+
 class Image < ApplicationRecord
-  has_attached_file :image, styles: {medium: '300x300#', thumb: '200x200#'}
+  has_attached_file :image
   validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'application/pdf']
 
   has_and_belongs_to_many :albums
 
   before_destroy :destroy_image
 
+  def small_thumb_url
+    thumbor_url thumbor_face_crop(100, 100)
+  end
+
+  def thumb_url
+    thumbor_url thumbor_face_crop(300, 300)
+  end
+
+  def medium_url
+    thumbor_url thumbor_max_midth(500)
+  end
+
   private
+
+  def thumbor_key
+    Rails.application.secrets.thumbor_key
+  end
+
+  def file_path
+    image.path.partition('/')[2]
+  end
+
+  def thumbor_url url
+    "#{ENV['THUMBOR_URL']}#{url}"
+  end
+
+  def thumbor_max_midth width
+    thumbor_image.width(width).generate
+  end
+
+  def thumbor_face_crop width, height
+    thumbor_image.width(width).height(height).smart.generate
+  end
+
+  def thumbor_image
+    Thumbor::Cascade.new(thumbor_key, file_path)
+  end
 
   def destroy_image
     image.destroy

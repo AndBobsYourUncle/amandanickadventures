@@ -3,7 +3,7 @@
 ActiveAdmin.register Image do
   menu parent: 'Albums', label: 'Images', priority: 3
 
-  permit_params :name, :caption, :image
+  permit_params :name, :caption, :image, :custom_cropping, :crop_top_left_x, :crop_top_left_y, :crop_bottom_right_x, :crop_bottom_right_y
 
   batch_action :destroy do |ids|
     Image.where(id: ids).delete_all
@@ -61,10 +61,35 @@ ActiveAdmin.register Image do
   form do |f|
     actions
 
-    inputs 'Details' do
-      f.input :name, minimum_input_length: 1
-      f.input :caption
-      f.input :image, hint: image_tag(f.object.small_thumb_url)
+    tabs do
+      tab 'Details' do
+        inputs 'Details' do
+          f.input :name, minimum_input_length: 1
+          f.input :caption
+          f.input :custom_cropping
+          f.input :image, hint: image_tag(f.object.small_thumb_url)
+        end
+      end
+      tab 'Custom Cropping' do
+        inputs 'Custom Cropping' do
+          cropping_elements = safe_join(
+            [
+              button_tag('Save Crop Values', id: 'save_crop_values'),
+              hidden_field_tag('crop_top_left_x'),
+              hidden_field_tag('crop_top_left_y'),
+              hidden_field_tag('crop_bottom_right_x'),
+              hidden_field_tag('crop_bottom_right_y'),
+              image_tag(f.object.url, class: 'cropper-image', style: 'max-width: 100%;')
+            ],
+            ' '
+          )
+
+          f.input :crop_top_left_x
+          f.input :crop_top_left_y
+          f.input :crop_bottom_right_x
+          f.input :crop_bottom_right_y, hint: cropping_elements
+        end
+      end
     end
   end
 end

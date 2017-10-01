@@ -22,6 +22,10 @@ class Image < ApplicationRecord
     thumbor_url thumbor_max_midth(500)
   end
 
+  def url
+    thumbor_url thumbor_image.generate
+  end
+
   private
 
   def thumbor_key
@@ -47,7 +51,11 @@ class Image < ApplicationRecord
   end
 
   def thumbor_image
-    Thumbor::Cascade.new(thumbor_key, file_path)
+    if custom_cropping
+      Thumbor::Cascade.new(thumbor_key, file_path).crop(crop_top_left_x, crop_top_left_y, crop_bottom_right_x, crop_bottom_right_y)
+    else
+      Thumbor::Cascade.new(thumbor_key, file_path)
+    end
   end
 
   def destroy_image

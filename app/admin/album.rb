@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Album do
-  menu parent: 'Albums', label: 'Albums', priority: 3
-
   permit_params :name, album_images_attributes: %i[id image_id position _destroy]
 
   index do
     column 'Thumbnail' do |album|
-      render partial: 'albums/thumbnail', locals: {album: album}
+      div render(partial: 'albums/thumbnail', locals: {album: album}),
+          style: "cursor: pointer; display: inline-block;",
+          onclick: "window.location='#{admin_album_path(album)}';"
     end
 
     column :name do |album|

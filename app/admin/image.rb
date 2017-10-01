@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Image do
-  menu parent: 'Albums', label: 'Images', priority: 3
-
-  permit_params :name, :caption, :image, :custom_cropping, :crop_top_left_x, :crop_top_left_y, :crop_bottom_right_x, :crop_bottom_right_y
+  permit_params :name, :caption, :image, :custom_cropping, :crop_top_left_x,
+                :crop_top_left_y, :crop_bottom_right_x, :crop_bottom_right_y
 
   batch_action :destroy do |ids|
     Image.where(id: ids).delete_all

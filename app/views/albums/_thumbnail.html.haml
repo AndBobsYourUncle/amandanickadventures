@@ -1,3 +1,3 @@
 %div{style: "width: #{album.thumb_width}px;"}<
   - album.images.each do |image|
-    = image_tag image.pixel_thumb_url(width: Album::PIXEL_THUMB_WIDTH)
+    = image_tag image.pixel_thumb_url(width: Album::PIXEL_THUMB_WIDTH), style: 'vertical-align: middle;'

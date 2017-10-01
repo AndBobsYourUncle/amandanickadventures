@@ -17,7 +17,10 @@ ActiveAdmin.register Image do
       link_to image_tag(image.small_thumb_url), admin_image_path(image)
     end
 
-    column :name
+    column :name do  |image|
+      link_to image.name, admin_image_path(image)
+    end
+
     column :caption
 
     column 'Edit' do |image|

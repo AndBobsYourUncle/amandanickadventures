@@ -21,7 +21,7 @@ $(document).ready () ->
   $('#save_crop_values').click (e) ->
     $('#image_crop_top_left_x').val($('#crop_top_left_x').val())
     $('#image_crop_top_left_y').val($('#crop_top_left_y').val())
-    $('#image_crop_bottom_left_x').val($('#crop_bottom_left_x').val())
-    $('#image_crop_bottom_left_y').val($('#crop_bottom_left_y').val())
+    $('#image_crop_bottom_right_x').val($('#crop_bottom_left_x').val())
+    $('#image_crop_bottom_right_y').val($('#crop_bottom_left_y').val())
 
     e.preventDefault()

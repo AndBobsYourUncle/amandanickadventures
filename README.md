@@ -9,7 +9,7 @@ To get this deployed to a production server, you can follow this quick guide bas
 ### AWS Setup
 
 1. Create a new group in your security settings, and give the group AmazonS3FullAccess privileges. Then create a new user in that group, and generate a new access key and secret. Note those down.
-2. Create a new S3 bucket, with that new user as the owner. Just leave it on private, only viewable with credentials. Note down the bucket name.
+2. Create a new S3 bucket, with that new user as the owner. Just leave it on private, only viewable with credentials. Note down the bucket name, region, and host.
 
 ### FB Setup
 

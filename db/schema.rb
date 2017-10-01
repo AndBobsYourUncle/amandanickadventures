@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170817011715) do
+ActiveRecord::Schema.define(version: 20171001014057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,17 +29,18 @@ ActiveRecord::Schema.define(version: 20170817011715) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
+  create_table "album_images", force: :cascade do |t|
+    t.bigint "album_id"
+    t.bigint "image_id"
+    t.integer "position"
+    t.index ["album_id"], name: "index_album_images_on_album_id"
+    t.index ["image_id"], name: "index_album_images_on_image_id"
+  end
+
   create_table "albums", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "albums_images", id: false, force: :cascade do |t|
-    t.bigint "album_id", null: false
-    t.bigint "image_id", null: false
-    t.index ["album_id", "image_id"], name: "index_albums_images_on_album_id_and_image_id"
-    t.index ["image_id", "album_id"], name: "index_albums_images_on_image_id_and_album_id"
   end
 
   create_table "images", force: :cascade do |t|

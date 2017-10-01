@@ -3,7 +3,7 @@
 ActiveAdmin.register Album do
   menu parent: 'Albums', label: 'Albums', priority: 3
 
-  permit_params :name
+  permit_params :name, album_images_attributes: %i[id image_id position _destroy]
 
   index do
     column 'Edit' do |job|
@@ -19,11 +19,51 @@ ActiveAdmin.register Album do
 
   filter :name
 
+  show do |image|
+    columns do
+      column do
+        attributes_table do
+          row :name
+        end
+      end
+    end
+    panel 'Images' do
+      album.album_images.order(:position).in_batches(of: 6) do |imgs|
+        div do
+          imgs.each do |img|
+            div style: 'display: inline-block;' do
+              link_to admin_image_path img.image do
+                image_tag img.image.small_thumb_url
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   form do |f|
     actions
 
     inputs 'Details' do
       f.input :name, minimum_input_length: 1
+    end
+
+    unless f.object.new_record?
+      inputs 'Images' do
+        f.has_many :album_images, allow_destroy: true, sortable: :position do |t|
+          position_hint = safe_join(
+            [
+              t.object.image ? link_to(t.template.image_tag(t.object.image.small_thumb_url), admin_image_path(t.object.image)) : ''
+            ],
+            ' '
+          )
+
+          t.input :position, hint: position_hint
+          t.input :image
+        end
+      end
+      actions
     end
   end
 end

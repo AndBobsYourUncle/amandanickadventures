@@ -57,7 +57,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - TC_AWS_LOADER_BUCKET=${S3_BUCKET_NAME}
       - TC_AWS_REGION=${AWS_REGION}
-      - DETECTORS=['thumbor.detectors.face_detector', 'thumbor.detectors.feature_detector']
+      - DETECTORS=['thumbor.detectors.queued_detector.queued_complete_detector', 'thumbor.detectors.face_detector', 'thumbor.detectors.feature_detector']
       - TC_AWS_ENABLE_HTTP_LOADER=True
       - TC_AWS_RESULT_STORAGE_BUCKET=${S3_BUCKET_NAME}
       - TC_AWS_RESULT_STORAGE_ROOT_PATH=result_storage

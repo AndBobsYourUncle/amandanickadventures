@@ -29,6 +29,8 @@ class Image < ApplicationRecord
   end
 
   def file_path
+    return '' unless image.path
+
     image.path.partition('/')[2]
   end
 

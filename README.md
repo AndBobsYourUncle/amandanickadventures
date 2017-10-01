@@ -4,9 +4,22 @@ This is a complete solution that can be deployed on a cloud server relatively ea
 
 Friends of any of the admins are allowed to view the main site, whereas non-friends are shown a different homepage. This can enable you to have a fully-stylized website that hosts all the images you want to share, and it is only viewable to friends.
 
-To get this deployed to a production server, you can follow this quick guide based on Digital Ocean:
+To get this deployed to a production server, you can follow this quick guide based on Digital Ocean (and using AWS S3 for image storage):
 
-1. Create a new Digital Ocean droplet and all the networking to get a domain pointed to it via the networking options. Use a Ubuntu installation.
+### AWS Setup
+
+1. Create a new group in your security settings, and give the group AmazonS3FullAccess privileges. Then create a new user in that group, and generate a new access key and secret. Note those down.
+2. Create a new S3 bucket, with that new user as the owner. Just leave it on private, only viewable with credentials. Note down the bucket name.
+
+### FB Setup
+
+1. Go to https://developers.facebook.com/apps/ and create a new app.
+2. Add a product to the app, and pick "Facebook Login".
+3. Choose the one for "web," click the save button, and then switch the the settings for that product and for the OAuth callback enter in: `https://[DOMAIN OF SITE]/users/auth/facebook/callback`
+
+### Digital Ocean setup
+
+1. Create a new Digital Ocean droplet and all the networking to get the domain pointed to it via the networking options. Use a Ubuntu installation.
 2. On the fresh Ubuntu droplet, you can follow this doc to get it completely set up: https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04
 3. Follow this guide to setup Docker on the droplet: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
 4. Install docker-compose on the server: https://docs.docker.com/compose/install/#install-compose

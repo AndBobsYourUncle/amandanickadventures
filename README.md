@@ -1,24 +1,7 @@
-# README
+# Facebook Photo Site
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a complete solution that can be deployed on a cloud server relatively easily. Once deployed, emails for Facebook admins are read in from an environment variable, and admin access is granted to anyone that signs in via Facebook that has a matching email.
 
-Things you may want to cover:
+Friends of any of the admins are allowed to view the main site, whereas non-friends are shown a different homepage. This can enable you to have a fully-stylized website that hosts all the images you want to share, and it is only viewable to friends.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To get this deployed to a production server, you can follow this quick guide:

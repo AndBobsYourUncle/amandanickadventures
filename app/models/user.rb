@@ -5,6 +5,14 @@ class User < ApplicationRecord
 
   validates :email, presence: true
 
+  def not_blacklisted?
+    UserBlacklist.find_by(email: email).blank?
+  end
+
+  def whitelisted?
+    UserWhitelist.find_by(email: email).present?
+  end
+
   def friend?
     facebook = Koala::Facebook::API.new(fb_token)
     @friends = facebook.get_connections('me', 'friends')

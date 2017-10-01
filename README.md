@@ -19,7 +19,7 @@ To get this deployed to a production server, you can follow this quick guide bas
 
 ### Digital Ocean setup
 
-1. Create a new Digital Ocean droplet and all the networking to get the domain pointed to it via the networking options. Use a Ubuntu installation.
+1. Create a new Digital Ocean droplet and all the networking to get the domain pointed to it via the networking options. Use a Ubuntu installation. For this server to run without crashing due to the memory limit, you'll need at least 4 GB of RAM for the droplet.
 2. On the fresh Ubuntu droplet, you can follow this doc to get it completely set up: https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04
 3. Follow this guide to setup Docker on the droplet: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
 4. Install docker-compose on the server: https://docs.docker.com/compose/install/#install-compose

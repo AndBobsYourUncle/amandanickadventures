@@ -35,7 +35,7 @@ services:
       - front
 
   thumbor:
-    image: apsl/thumbor:latest
+    image: apsl/thumbor-multiprocess:latest
     volumes:
       - logs:/logs
       - data:/data

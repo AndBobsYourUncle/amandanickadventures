@@ -52,7 +52,7 @@ services:
       - LOADER=tc_aws.loaders.s3_loader
       - SECURITY_KEY=${THUMBOR_KEY}
       - ALLOW_UNSAFE_URL=False
-      - ALLOW_OLD_URLS=False
+      - LOG_LEVEL=debug
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - TC_AWS_LOADER_BUCKET=${S3_BUCKET_NAME}
@@ -73,6 +73,23 @@ services:
       - STORAGE_EXPIRATION_SECONDS=None
       - RESULT_STORAGE_EXPIRATION_SECONDS=None
       - MIXED_STORAGE_DETECTOR_STORAGE=tc_redis.storages.redis_storage
+
+  remotecv:
+    image: apsl/remotecv:latest
+    container_name: remotecv
+    restart: always
+    networks:
+      - front
+      - back
+    environment:
+      - REMOTECV_REDIS_HOST=redis
+      - REMOTECV_REDIS_PORT=6379
+      - REMOTECV_REDIS_DATABASE=0
+      - REMOTECV_LOADER=remotecv_aws.loader
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_LOADER_BUCKET=${S3_BUCKET_NAME}
+      - LOG_LEVEL=DEBUG
 
   redis:
     image: redis:latest

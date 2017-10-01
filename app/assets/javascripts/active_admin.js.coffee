@@ -24,4 +24,4 @@ $(document).ready () ->
     $('#image_crop_bottom_right_x').val($('#crop_bottom_right_x').val())
     $('#image_crop_bottom_right_y').val($('#crop_bottom_right_y').val())
 
-    e.preventDefault()
+    $('#image_custom_cropping').attr('checked', 'checked')

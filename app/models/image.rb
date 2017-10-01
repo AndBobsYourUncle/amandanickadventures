@@ -50,11 +50,15 @@ class Image < ApplicationRecord
     thumber_image_cropped.width(width).height(height).smart.generate
   end
 
+  def thumbor_crop x1, y1, x2, y2
+    thumbor_image.crop(x1, y1, x2, y2)
+  end
+
   def thumber_image_cropped
     if custom_cropping
-      Thumbor::Cascade.new(thumbor_key, file_path).crop(crop_top_left_x, crop_top_left_y, crop_bottom_right_x, crop_bottom_right_y)
+      thumbor_crop(crop_top_left_x, crop_top_left_y, crop_bottom_right_x, crop_bottom_right_y)
     else
-      Thumbor::Cascade.new(thumbor_key, file_path)
+      thumbor_image
     end
   end
 

@@ -4,6 +4,8 @@ This is a complete solution that can be deployed on a cloud server relatively ea
 
 Friends of any of the admins are allowed to view the main site, whereas non-friends are shown a different homepage. This can enable you to have a fully-stylized website that hosts all the images you want to share, and it is only viewable to friends.
 
+In addition, the emails of Facebook users can either be added to a whitelist or blacklist. This can enable you to block the site from being viewable to certain friends, or enable you to share the site with people who are not friends with any admins on Facebook.
+
 To get this deployed to a production server, you can follow this quick guide based on Digital Ocean (and using AWS S3 for image storage):
 
 ### AWS Setup

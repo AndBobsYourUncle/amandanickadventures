@@ -6,6 +6,10 @@ ActiveAdmin.register Album do
   permit_params :name, album_images_attributes: %i[id image_id position _destroy]
 
   index do
+    column 'Thumbnail' do |album|
+      render partial: 'albums/thumbnail', locals: {album: album}
+    end
+
     column :name do |album|
       link_to album.name, admin_album_path(album)
     end

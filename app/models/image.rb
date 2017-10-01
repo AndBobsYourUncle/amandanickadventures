@@ -10,6 +10,10 @@ class Image < ApplicationRecord
 
   before_destroy :destroy_image
 
+  def pixel_thumb_url width: 10
+    thumbor_url thumbor_face_crop(width, width)
+  end
+
   def small_thumb_url
     thumbor_url thumbor_face_crop(100, 100)
   end

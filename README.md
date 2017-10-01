@@ -25,7 +25,7 @@ To get this deployed to a production server, you can follow this quick guide bas
 4. Install docker-compose on the server: https://docs.docker.com/compose/install/#install-compose
 5. Git clone this repository on the server.
 6. Run `rails secret` and note down the key. If you'd like more security for the image server, do this twice and save both keys.
-7. Edit your bash profile to add all necessary enviroment variables. Run `sudo nano /etc/profile` and add this following lines:
+7. Edit your bash profile to add all necessary enviroment variables. Run `sudo nano /etc/profile` and add the following lines to the end:
 ```
 export FB_PHOTO_SITE_SECRET_KEY_BASE=[KEY FROM STEP 6 ABOVE]
 export FB_PHOTO_SITE_HOSTNAME=[YOUR DOMAIN NAME]

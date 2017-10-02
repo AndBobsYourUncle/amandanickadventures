@@ -5,7 +5,7 @@ ActiveAdmin.register Image do
                 :crop_top_left_y, :crop_bottom_right_x, :crop_bottom_right_y
 
   batch_action :destroy do |ids|
-    Image.where(id: ids).delete_all
+    Image.where(id: ids).destroy_all
     redirect_to admin_images_path, success: 'Images have been successfully deleted!'
   end
 

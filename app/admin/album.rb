@@ -3,6 +3,16 @@
 ActiveAdmin.register Album do
   permit_params :name, album_images_attributes: %i[id image_id position _destroy]
 
+  controller do
+    def update
+      if resource.update_attributes permitted_params[:album]
+        redirect_to edit_admin_album_path(resource), notice: 'Album successfully updated.'
+      else
+        render :edit, notice: 'Ablum update wasn\'t successful.'
+      end
+    end
+  end
+
   member_action :upload_images, method: :post do
     uploaded_pics = params[:file]
     uploaded_pics.each do |index, image|
@@ -44,6 +54,8 @@ ActiveAdmin.register Album do
       album.album_images.order(:position).in_batches(of: 6) do |imgs|
         div do
           imgs.each do |img|
+            next if img.image.blank?
+
             div style: 'display: inline-block;' do
               link_to admin_image_path img.image do
                 image_tag img.image.small_thumb_url

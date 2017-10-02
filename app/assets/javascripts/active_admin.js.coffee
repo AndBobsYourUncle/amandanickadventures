@@ -3,15 +3,15 @@
 #= require dropzone
 
 $(document).ready () ->
-  images = Array.from(document.getElementsByClassName('cropper-image'));
+  images = Array.from(document.getElementsByClassName('cropper-image'))
 
   images.forEach (image) ->
     cropper = new Cropper(image, {
-      checkImageOrigin: false,
-      checkCrossOrigin: false,
-      minContainerWidth: 1000,
-      minContainerHeight: 800,
-      viewMode: 1,
+      checkImageOrigin: false
+      checkCrossOrigin: false
+      minContainerWidth: 1000
+      minContainerHeight: 800
+      viewMode: 1
       crop: (e) ->
         $('#crop_top_left_x').val(e.detail.x)
         $('#crop_top_left_y').val(e.detail.y)
@@ -29,10 +29,12 @@ $(document).ready () ->
 
   Dropzone.autoDiscover = false;
   if $('#dropzone_upload')[0]
-    myDropzone = new Dropzone('div#dropzone_upload', {
-      url: "#{$('form').attr('action')}/upload_images",
-      uploadMultiple: true,
+    myDropzone = new Dropzone('div#dropzone_upload',
+      url: "#{$('form').attr('action')}/upload_images"
+      uploadMultiple: true
       params:{
         'authenticity_token': $('meta[name=csrf-token]').attr('content')
       }
-    });
+      queuecomplete: (data, response) ->
+        $('#edit_album').off('submit').submit()
+    )

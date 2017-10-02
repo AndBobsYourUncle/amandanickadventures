@@ -3,7 +3,7 @@
 class Album < ApplicationRecord
   PIXEL_THUMB_WIDTH = 20
 
-  has_many :album_images
+  has_many :album_images, dependent: :destroy
   has_many :images, through: :album_images
 
   accepts_nested_attributes_for :album_images, allow_destroy: true

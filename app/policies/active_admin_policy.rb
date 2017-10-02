@@ -16,6 +16,10 @@ class ActiveAdminPolicy
     scope.where(id: record.id).exists?
   end
 
+  def upload_images?
+    user&.admin?
+  end
+
   def create?
     user&.admin?
   end

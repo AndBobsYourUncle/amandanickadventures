@@ -106,6 +106,8 @@ GEM
       railties (>= 4.1.0, < 5.2)
       responders
       warden (~> 1.2.3)
+    dropzonejs-rails (0.8.1)
+      rails (> 3.1)
     erubi (1.6.1)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -349,6 +351,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   devise
+  dropzonejs-rails
   haml-rails (~> 0.9)
   hamlit
   jbuilder (~> 2.5)

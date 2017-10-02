@@ -6,7 +6,8 @@ class Image < ApplicationRecord
   has_attached_file :image
   validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'application/pdf']
 
-  has_and_belongs_to_many :albums
+  has_many :album_images
+  has_many :albums, through: :album_images
 
   before_destroy :destroy_image
 

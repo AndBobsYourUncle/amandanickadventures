@@ -54,6 +54,8 @@ gem 'paperclip'
 
 gem 'ruby-thumbor'
 
+gem 'dropzonejs-rails'
+
 group :development, :test do
   gem 'pry'
 

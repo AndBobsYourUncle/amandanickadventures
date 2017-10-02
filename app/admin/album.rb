@@ -3,6 +3,13 @@
 ActiveAdmin.register Album do
   permit_params :name, album_images_attributes: %i[id image_id position _destroy]
 
+  member_action :upload_images, method: :post do
+    uploaded_pics = params[:file]
+    uploaded_pics.each do |index, image|
+      AlbumImage.create(album_id: resource.id, image_attributes: {image: image})
+    end
+  end
+
   index do
     column 'Thumbnail' do |album|
       div render(partial: 'albums/thumbnail', locals: {album: album}),
@@ -56,6 +63,10 @@ ActiveAdmin.register Album do
     end
 
     unless f.object.new_record?
+      inputs 'Multiple image upload' do
+        tag.div '', id: 'dropzone_upload', class: 'dropzone'
+      end
+
       inputs 'Images' do
         f.has_many :album_images, allow_destroy: true, sortable: :position do |t|
           position_hint = safe_join(

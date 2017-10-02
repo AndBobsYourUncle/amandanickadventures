@@ -1,5 +1,6 @@
 #= require active_admin/base
 #= require cropper/cropper
+#= require dropzone
 
 $(document).ready () ->
   images = Array.from(document.getElementsByClassName('cropper-image'));
@@ -25,3 +26,13 @@ $(document).ready () ->
     $('#image_crop_bottom_right_y').val($('#crop_bottom_right_y').val())
 
     $('#image_custom_cropping').attr('checked', 'checked')
+
+  Dropzone.autoDiscover = false;
+  if $('#dropzone_upload')[0]
+    myDropzone = new Dropzone("div#dropzone_upload", {
+      url: "#{$('form').attr('action')}/upload_images",
+      uploadMultiple: true,
+      params:{
+        'authenticity_token':  $('meta[name=csrf-token]').attr('content')
+      }
+    });

@@ -9,7 +9,7 @@ class ActiveAdminPolicy
   end
 
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def show?
@@ -17,7 +17,7 @@ class ActiveAdminPolicy
   end
 
   def create?
-    user.admin?
+    user&.admin?
   end
 
   def new?
@@ -25,7 +25,7 @@ class ActiveAdminPolicy
   end
 
   def update?
-    user.admin?
+    user&.admin?
   end
 
   def edit?
@@ -33,7 +33,7 @@ class ActiveAdminPolicy
   end
 
   def destroy?
-    user.admin?
+    user&.admin?
   end
 
   def scope

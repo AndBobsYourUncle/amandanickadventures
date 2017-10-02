@@ -29,10 +29,10 @@ $(document).ready () ->
 
   Dropzone.autoDiscover = false;
   if $('#dropzone_upload')[0]
-    myDropzone = new Dropzone("div#dropzone_upload", {
+    myDropzone = new Dropzone('div#dropzone_upload', {
       url: "#{$('form').attr('action')}/upload_images",
       uploadMultiple: true,
       params:{
-        'authenticity_token':  $('meta[name=csrf-token]').attr('content')
+        'authenticity_token': $('meta[name=csrf-token]').attr('content')
       }
     });

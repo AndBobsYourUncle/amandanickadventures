@@ -2,7 +2,7 @@
 
 class AlbumImage < ApplicationRecord
   belongs_to :album
-  belongs_to :image, dependent: :destroy
+  belongs_to :image
 
   accepts_nested_attributes_for :image
 

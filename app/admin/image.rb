@@ -9,6 +9,8 @@ ActiveAdmin.register Image do
     redirect_to admin_images_path, success: 'Images have been successfully deleted!'
   end
 
+  filter :albums
+
   index do
     selectable_column
 

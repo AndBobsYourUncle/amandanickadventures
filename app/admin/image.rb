@@ -93,8 +93,8 @@ ActiveAdmin.register Image do
           f.input :image, hint: image_tag(f.object.small_thumb_url)
         end
       end
-      tab 'Custom Cropping' do
-        inputs 'Custom Cropping' do
+      tab 'Custom Thumbnail' do
+        inputs 'Custom Thumbnail Cropping' do
           cropping_elements = safe_join(
             [
               button_tag('Save Crop Values', id: 'save_crop_values'),

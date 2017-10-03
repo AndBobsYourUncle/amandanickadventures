@@ -94,14 +94,32 @@ ActiveAdmin.register Album do
 
       inputs 'Images' do
         f.has_many :album_images, allow_destroy: true, sortable: :position do |t|
-          position_hint = safe_join(
-            [
-              t.object.image ? link_to(t.template.image_tag(t.object.image.small_thumb_url), edit_admin_image_path(t.object.image)) : ''
-            ],
-            ' '
-          )
+          image_thumbnail = if t.object.image
+            safe_join(
+              [
+                'Position',
+                tag.br,
+                tag.br,
+                'Thumbnail:',
+                tag.br,
+                link_to(t.template.image_tag(t.object.image.small_thumb_url), edit_admin_image_path(t.object.image))
+              ]
+            )
+          else
+            'Position'
+          end
 
-          t.input :position, hint: position_hint
+          image_preview = if t.object.image
+            safe_join(
+              [
+                link_to(t.template.image_tag(t.object.image.small_height_url), edit_admin_image_path(t.object.image)),
+                tag.br,
+                'Click to edit thumbnail'
+              ]
+            )
+          end
+
+          t.input :position, hint: image_preview, label: image_thumbnail
           t.input :image
           t.input :image_name
           t.input :image_caption

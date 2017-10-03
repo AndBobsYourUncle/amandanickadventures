@@ -24,7 +24,11 @@ class Image < ApplicationRecord
   end
 
   def medium_url
-    thumbor_url thumbor_max_midth(500)
+    thumbor_url thumbor_max_width(500)
+  end
+
+  def small_height_url
+    thumbor_url thumbor_max_height(100)
   end
 
   def url
@@ -47,8 +51,12 @@ class Image < ApplicationRecord
     "#{ENV['THUMBOR_URL']}#{url}"
   end
 
-  def thumbor_max_midth width
+  def thumbor_max_width width
     thumbor_image.width(width).generate
+  end
+
+  def thumbor_max_height height
+    thumbor_image.height(height).generate
   end
 
   def thumbor_face_crop width, height

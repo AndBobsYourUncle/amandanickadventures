@@ -4,6 +4,14 @@ ActiveAdmin.register Album do
   permit_params :name, album_images_attributes: %i[id image_id position image_name image_caption _destroy]
 
   controller do
+    def create
+      if resource = Album.create(permitted_params[:album])
+        redirect_to edit_admin_album_path(resource), notice: 'Album successfully created.'
+      else
+        render :new, notice: 'Ablum creation wasn\'t successful.'
+      end
+    end
+
     def update
       if resource.update_attributes permitted_params[:album]
         redirect_to edit_admin_album_path(resource), notice: 'Album successfully updated.'
@@ -71,7 +79,7 @@ ActiveAdmin.register Album do
     actions
 
     inputs 'Details' do
-      f.input :name, minimum_input_length: 1
+      f.input :name, minimum_input_length: 1, hint: f.object.new_record? ? 'Before you can add images, you must enter a name and create the album.' : ''
     end
 
     unless f.object.new_record?

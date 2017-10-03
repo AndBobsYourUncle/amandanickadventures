@@ -3,6 +3,16 @@
 ActiveAdmin.register UserBlacklist do
   permit_params :email
 
+  controller do
+    def create
+      if resource = UserBlacklist.create(permitted_params[:user_blacklist])
+        redirect_to admin_user_blacklists_path, notice: 'User blacklist successfully created.'
+      else
+        render :new, notice: 'User blacklist creation wasn\'t successful.'
+      end
+    end
+  end
+
   batch_action :destroy do |ids|
     UserBlacklist.where(id: ids).delete_all
     redirect_to admin_user_blacklists_path, success: 'Images have been successfully deleted!'

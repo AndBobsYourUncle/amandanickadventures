@@ -3,6 +3,16 @@
 ActiveAdmin.register UserWhitelist do
   permit_params :email
 
+  controller do
+    def create
+      if resource = UserWhitelist.create(permitted_params[:user_whitelist])
+        redirect_to admin_user_whitelists_path, notice: 'User whitelist successfully created.'
+      else
+        render :new, notice: 'User whitelist creation wasn\'t successful.'
+      end
+    end
+  end
+
   batch_action :destroy do |ids|
     UserWhitelist.where(id: ids).delete_all
     redirect_to admin_user_whitelists_path, success: 'Images have been successfully deleted!'

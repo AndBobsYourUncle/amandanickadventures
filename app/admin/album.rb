@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Album do
-  permit_params :name, album_images_attributes: %i[id image_id position _destroy]
+  permit_params :name, album_images_attributes: %i[id image_id position image_name image_caption _destroy]
 
   controller do
     def update
@@ -90,6 +90,8 @@ ActiveAdmin.register Album do
 
           t.input :position, hint: position_hint
           t.input :image
+          t.input :image_name
+          t.input :image_caption
         end
       end
       actions

@@ -13,7 +13,12 @@ ActiveAdmin.register Album do
     end
 
     def update
-      if resource.update_attributes permitted_params[:album]
+      album_hash = permitted_params[:album].to_h
+      album_hash[:album_images_attributes].each do |_, image_hash|
+        image_hash.delete(:image_name).delete(:image_caption) if image_hash[:id].blank?
+      end
+
+      if resource.update_attributes album_hash
         redirect_to edit_admin_album_path(resource), notice: 'Album successfully updated.'
       else
         render :edit, notice: 'Ablum update wasn\'t successful.'
@@ -23,7 +28,7 @@ ActiveAdmin.register Album do
 
   member_action :upload_images, method: :post do
     uploaded_pics = params[:file]
-    uploaded_pics.each do |index, image|
+    uploaded_pics.each do |_, image|
       AlbumImage.create(album_id: resource.id, image_attributes: {image: image})
     end
   end

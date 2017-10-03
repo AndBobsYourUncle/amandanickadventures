@@ -9,6 +9,25 @@ ActiveAdmin.register Image do
     redirect_to admin_images_path, success: 'Images have been successfully deleted!'
   end
 
+  controller do
+    def edit
+      session[:prev_url] = request.referer
+      super
+    end
+
+    def update
+      if resource.update_attributes permitted_params[:image]
+        if session[:prev_url].present?
+          redirect_to session[:prev_url], notice: 'Image successfully updated.'
+        else
+          redirect_to admin_image_path(resource), notice: 'Image successfully updated.'
+        end
+      else
+        render :edit, notice: 'Image update wasn\'t successful.'
+      end
+    end
+  end
+
   filter :albums
 
   index do

@@ -83,7 +83,7 @@ ActiveAdmin.register Album do
         f.has_many :album_images, allow_destroy: true, sortable: :position do |t|
           position_hint = safe_join(
             [
-              t.object.image ? link_to(t.template.image_tag(t.object.image.small_thumb_url), admin_image_path(t.object.image)) : ''
+              t.object.image ? link_to(t.template.image_tag(t.object.image.small_thumb_url), edit_admin_image_path(t.object.image)) : ''
             ],
             ' '
           )

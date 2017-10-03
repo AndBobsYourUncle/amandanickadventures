@@ -45,7 +45,7 @@ ActiveAdmin.register Album do
     end
 
     column 'Edit' do |album|
-      link_to 'Edit', edit_admin_album_path(album)
+      link_to 'Edit', edit_admin_album_path(album), class: 'button'
     end
   end
 

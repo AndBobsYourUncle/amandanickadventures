@@ -44,7 +44,7 @@ ActiveAdmin.register Image do
     column :caption
 
     column 'Edit' do |image|
-      link_to 'Edit', edit_admin_image_path(image)
+      link_to 'Edit', edit_admin_image_path(image), class: 'button'
     end
   end
 

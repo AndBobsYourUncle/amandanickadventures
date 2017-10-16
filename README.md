@@ -32,8 +32,6 @@ To get this deployed to a production server, you can follow this quick guide bas
 export FB_PHOTO_SITE_SECRET_KEY_BASE=[KEY FROM STEP 6 ABOVE]
 export FB_PHOTO_SITE_HOSTNAME=[YOUR DOMAIN NAME]
 export FB_PHOTO_SITE_EMAIL=[YOUR EMAIL]
-export THUMBOR_HOSTNAME=images.[YOUR DOMAIN NAME]
-export THUMBOR_URL=https://images.[YOUR DOMAIN NAME]
 export THUMBOR_KEY=[KEY FROM STEP 6 ABOVE]
 
 export FB_APP_ID=[FB APP ID]

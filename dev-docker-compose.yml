@@ -1,39 +1,6 @@
 version: '2'
 
 services:
-  nginx-server:
-    image: jwilder/nginx-proxy:latest
-    container_name: nginx-proxy
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./certs:/etc/nginx/certs
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      - back
-      - front
-
-  lets-encrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion:latest
-    container_name: lets-encrypt
-    restart: always
-    depends_on:
-      - nginx-server
-    volumes:
-      - ./certs:/etc/nginx/certs:rw
-    volumes_from:
-      - nginx-server
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - back
-      - front
-
   thumbor:
     image: apsl/thumbor-multiprocess:latest
     volumes:
@@ -41,9 +8,8 @@ services:
       - data:/data
     container_name: thumbor
     restart: always
-    networks:
-      - front
-      - back
+    ports:
+      - 8000:8000
     environment:
       - LOADER=tc_aws.loaders.s3_loader
       - SECURITY_KEY=${THUMBOR_KEY}
@@ -94,45 +60,6 @@ services:
     networks:
       - front
       - back
-
-  postgres:
-    image: postgres
-    container_name: postgres
-    restart: always
-    volumes:
-      - /var/run/postgresql
-      - ./postgres-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD:
-
-  facebook-photo-site:
-    image: andbobsyouruncle/facebook-photo-site:latest
-    command: bash -c "rails-init && /sbin/my_init"
-    container_name: facebook-photo-site
-    restart: always
-    depends_on:
-      - postgres
-    volumes_from:
-      - postgres
-    networks:
-      - front
-      - back
-    environment:
-      - VIRTUAL_HOST=${FB_PHOTO_SITE_HOSTNAME}
-      - VIRTUAL_PORT=443
-      - LETSENCRYPT_HOST=${FB_PHOTO_SITE_HOSTNAME}
-      - LETSENCRYPT_EMAIL=${FB_PHOTO_SITE_EMAIL}
-      - SECRET_KEY_BASE=${FB_PHOTO_SITE_SECRET_KEY_BASE}
-      - FB_APP_ID=${FB_APP_ID}
-      - FB_APP_SECRET=${FB_APP_SECRET}
-      - FB_PHOTO_SITE_ADMINS=${FB_PHOTO_SITE_ADMINS}
-      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_REGION=${AWS_REGION}
-      - AWS_HOST_NAME=${AWS_HOST_NAME}
-      - THUMBOR_KEY=${THUMBOR_KEY}
 
 volumes:
   data:

@@ -48,7 +48,7 @@ class Image < ApplicationRecord
   end
 
   def thumbor_url url
-    "#{ENV['THUMBOR_URL']}#{url}"
+    Rails.application.routes.url_helpers.server_images_url(url.partition('/')[2], only_path: true)
   end
 
   def thumbor_max_width width

@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   root to: 'pages#home'
 
   get '/not_a_friend' => 'pages#not_a_friend'
+
+  get 'images/*path', to: 'images#server_image', as: :server_images
 end

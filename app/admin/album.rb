@@ -14,8 +14,10 @@ ActiveAdmin.register Album do
 
     def update
       album_hash = permitted_params[:album].to_h
-      album_hash[:album_images_attributes].each do |_, image_hash|
-        image_hash.delete(:image_name).delete(:image_caption) if image_hash[:id].blank?
+      if album_hash[:album_images_attributes].present?
+        album_hash[:album_images_attributes].each do |_, image_hash|
+          image_hash.delete(:image_name).delete(:image_caption) if image_hash[:id].blank?
+        end
       end
 
       if resource.update_attributes album_hash

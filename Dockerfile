@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby24:0.9.24
+FROM phusion/passenger-ruby24:0.9.26
 
 ENV HOME /root
 

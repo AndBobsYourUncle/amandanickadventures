@@ -96,7 +96,7 @@ services:
       - back
 
   postgres:
-    image: postgres
+    image: postgres:10
     container_name: postgres
     restart: always
     volumes:

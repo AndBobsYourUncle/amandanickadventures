@@ -28,15 +28,9 @@ jobs:
           command: |
             set -ex \
               \
-              && buildDeps=' \
-                bison \
-                libgdbm-dev \
-                ruby \
-              ' \
-              && apk update
-              && apk upgrade
-
-              && apk del gcc gnupg curl ruby musl-dev make linux-headers && \
+              && apk update \
+              && apk upgrade \
+              && apk del gcc gnupg curl ruby musl-dev make linux-headers \
               && rm -rf /var/cache/apk/*
 
       - run: gem install bundler

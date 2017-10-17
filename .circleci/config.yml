@@ -31,25 +31,25 @@ jobs:
       - run: docker network create traffic_back
 
       - restore_cache:
-        keys:
-          - v1-{{ .Branch }}
-        paths:
-          - /caches/app.tar
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
       - run:
-        name: Load Docker image layer cache
-        command: |
-          set +o pipefail
-          docker load -i /caches/app.tar | true
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
       - run: docker-compose -f dev-docker-compose.yml up -d
       - run:
-        name: Save Docker image layer cache
-        command: |
-          mkdir -p /caches
-          docker save -o /caches/app.tar app
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
       - save_cache:
-        key: v1-{{ .Branch }}-{{ epoch }}
-        paths:
-          - /caches/app.tar
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
 
       # This should go into custom primary image, here's only for the sake of explanation
       # - run:

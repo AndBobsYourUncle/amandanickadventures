@@ -6,11 +6,11 @@ class User < ApplicationRecord
   validates :email, presence: true
 
   def not_blacklisted?
-    UserBlacklist.find_by(email: email).blank?
+    UserBlacklist.find_by(fb_id: uid).blank?
   end
 
   def whitelisted?
-    UserWhitelist.find_by(email: email).present?
+    UserWhitelist.find_by(fb_id: uid).present?
   end
 
   def friend?

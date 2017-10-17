@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register UserWhitelist do
-  permit_params :email
+  permit_params :fb_profile_photo_url
 
   controller do
     def create
-      if resource = UserWhitelist.create(permitted_params[:user_whitelist])
+      whitelist_hash = permitted_params[:user_whitelist]
+
+      if whitelist_hash[:fb_profile_photo_url].present?
+        whitelist_hash[:uid] = whitelist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{10})/)[1]
+
+        facebook = Koala::Facebook::API.new(current_user.fb_token)
+        whitelist_hash[:name] = facebook.get_object(whitelist_hash[:uid])['name']
+        whitelist_hash[:profile_photo] = facebook.get_picture_data(whitelist_hash[:uid], type: 'large')['data']['url']
+      end
+
+      if resource = UserWhitelist.create(whitelist_hash)
         redirect_to admin_user_whitelists_path, notice: 'User whitelist successfully created.'
       else
         render :new, notice: 'User whitelist creation wasn\'t successful.'
@@ -15,14 +25,26 @@ ActiveAdmin.register UserWhitelist do
 
   batch_action :destroy do |ids|
     UserWhitelist.where(id: ids).delete_all
-    redirect_to admin_user_whitelists_path, success: 'Images have been successfully deleted!'
+    redirect_to admin_user_whitelists_path, success: 'User whitelist has been successfully deleted!'
   end
 
   index do
     selectable_column
 
-    column :email do |whitelist|
-      link_to whitelist.email, admin_user_whitelist_path(whitelist)
+    column '' do |blacklist|
+      link_to image_tag(blacklist.profile_photo.to_s, width: 100), admin_user_blacklist_path(blacklist)
+    end
+
+    column :name do |whitelist|
+      link_to whitelist.name, admin_user_whitelist_path(whitelist)
+    end
+
+    column 'UID' do |whitelist|
+      link_to whitelist.uid, admin_user_whitelist_path(whitelist)
+    end
+
+    column 'App UID' do |whitelist|
+      link_to whitelist.fb_id, admin_user_whitelist_path(whitelist)
     end
 
     column 'Edit' do |whitelist|
@@ -31,26 +53,33 @@ ActiveAdmin.register UserWhitelist do
   end
 
   csv do
-    column :email
+    column :name
+    column :uid
+    column :fb_id
   end
 
-  filter :email
+  filter :name
+  filter :uid
+  filter :fb_id
 
-  show do |image|
+  show do |whitelist|
     columns do
       column do
         attributes_table do
-          row :email
+          row :name
+          row :uid
+          row :fb_id
         end
       end
     end
   end
 
+
   form do |f|
     actions
 
     inputs 'Details' do
-      f.input :email, minimum_input_length: 1
+      f.input :fb_profile_photo_url, hint: "View the person's FB profile photo, and paste the URL from your browser here."
     end
   end
 end

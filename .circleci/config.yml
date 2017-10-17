@@ -21,6 +21,8 @@ jobs:
                 echo 'update: --no-document'; \
               } >> /usr/local/etc/gemrc
       - run: echo 'export RUBY_MAJOR=2.1' >> $BASH_ENV
+      - run: echo 'export ENV BUILD_PACKAGES="bash curl-dev ruby-dev build-base"' >> $BASH_ENV
+      - run: echo 'export ENV RUBY_PACKAGES="ruby ruby-io-console ruby-bundler"' >> $BASH_ENV
       - run: echo 'export RUBY_VERSION=2.1.10' >> $BASH_ENV
       - run: echo 'export RUBY_DOWNLOAD_SHA256=5be9f8d5d29d252cd7f969ab7550e31bbb001feb4a83532301c0dd3b5006e148' >> $BASH_ENV
       - run: echo 'export RUBYGEMS_VERSION=2.6.10' >> $BASH_ENV
@@ -28,12 +30,13 @@ jobs:
           command: |
             set -ex \
               \
-              && apk update \
-              && apk upgrade \
-              && apk del gcc gnupg curl build-base ruby ruby-dev musl-dev make linux-headers \
-              && rm -rf /var/cache/apk/*
+              apk update && \
+              apk upgrade && \
+              apk add $BUILD_PACKAGES && \
+              apk add $RUBY_PACKAGES && \
+              rm -rf /var/cache/apk/*
 
-      - run: gem install bundler
+      # - run: gem install bundler
 
       # Restore bundle cache
       - restore_cache:

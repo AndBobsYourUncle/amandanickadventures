@@ -33,40 +33,13 @@ jobs:
                 libgdbm-dev \
                 ruby \
               ' \
-              && apt-get update \
-              && apt-get install -y --no-install-recommends $buildDeps \
-              && rm -rf /var/lib/apt/lists/* \
-              \
-              && wget -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz" \
-              && echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum -c - \
-              \
-              && mkdir -p /usr/src/ruby \
-              && tar -xJf ruby.tar.xz -C /usr/src/ruby --strip-components=1 \
-              && rm ruby.tar.xz \
-              \
-              && cd /usr/src/ruby \
-              \
-              && { \
-                echo '#define ENABLE_PATH_CHECK 0'; \
-                echo; \
-                cat file.c; \
-              } > file.c.new \
-              && mv file.c.new file.c \
-              \
-              && autoconf \
-              && ./configure --disable-install-doc --enable-shared \
-              && make -j"$(nproc)" \
-              && make install \
-              \
-              && apt-get purge -y --auto-remove $buildDeps \
-              && cd / \
-              && rm -r /usr/src/ruby \
-              \
-              && gem update --system "$RUBYGEMS_VERSION"
+              && apk update
+              && apk upgrade
 
-      - run: echo 'export BUNDLER_VERSION=1.14.3' >> $BASH_ENV
+              && apk del gcc gnupg curl ruby musl-dev make linux-headers && \
+              && rm -rf /var/cache/apk/*
 
-      - run: gem install bundler --version "$BUNDLER_VERSION"
+      - run: gem install bundler
 
       # Restore bundle cache
       - restore_cache:

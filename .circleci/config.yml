@@ -4,11 +4,13 @@ jobs:
     parallelism: 3
     working_directory: ~/photo-site
     docker:
-      - image: circleci/ruby:2.4.1-node
+      - image: docker:17.05.0-ce-git
         environment:
           RAILS_ENV: test
     steps:
       - checkout
+
+      - setup_remote_docker
 
       # Restore bundle cache
       - restore_cache:
@@ -23,10 +25,31 @@ jobs:
           paths:
             - vendor/bundle
 
-      - setup_remote_docker
+      # - setup_remote_docker
 
       - run: docker network create traffic_front
       - run: docker network create traffic_back
+
+      - restore_cache:
+        keys:
+          - v1-{{ .Branch }}
+        paths:
+          - /caches/app.tar
+      - run:
+        name: Load Docker image layer cache
+        command: |
+          set +o pipefail
+          docker load -i /caches/app.tar | true
+      - run: docker-compose -f dev-docker-compose.yml up -d
+      - run:
+        name: Save Docker image layer cache
+        command: |
+          mkdir -p /caches
+          docker save -o /caches/app.tar app
+      - save_cache:
+        key: v1-{{ .Branch }}-{{ epoch }}
+        paths:
+          - /caches/app.tar
 
       # This should go into custom primary image, here's only for the sake of explanation
       # - run:
@@ -45,7 +68,7 @@ jobs:
       #       curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
       #       chmod +x /usr/local/bin/docker-compose
 
-      - run: docker-compose -f dev-docker-compose.yml up -d
+
 
       # Database setup
       - run: bundle exec rake db:create

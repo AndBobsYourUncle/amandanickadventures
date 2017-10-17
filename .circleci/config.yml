@@ -40,8 +40,8 @@ jobs:
 
       # - run: curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
       # - run: chmod +x /usr/local/bin/docker-compose
-      - run: apk add 'py-pip==8.1.2-r0'
-      - run: pip install 'docker-compose==1.8.0'
+      - run: apk add py-pip
+      - run: pip install --trusted-host pypi.python.org docker-compose
 
       # - run: gem install bundler
 

@@ -1,0 +1,30 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+
+test:
+  override:
+    - docker version
+
+database:
+  override:
+    # replace CircleCI's generated database.yml
+    # - cp config/database.yml.ci config/database.yml
+    # - bundle exec rake db:create db:schema:load
+    - docker-compose -f dev-docker-compose.yml up -d
+
+deployment:
+  release:
+    # branch: master
+    tag: /^([0-9]+\.{0,1}){1,3}(\-([a-z0-9]+\.{0,1})+){0,1}(\+(build\.{0,1}){0,1}([a-z0-9]+\.{0,1}){0,}){0,1}$/
+    # tag: /^(\d+\.\d+\.\d+\-(?:RC)?\d+)?$/
+    commands:
+      - docker login -e $REGISTRY_EMAIL -u $REGISTRY_USER -p "$REGISTRY_PASS"
+      - docker build --rm=false -t $REGISTRY_USER/$APP_NAME:$CIRCLE_TAG .
+      - docker push $REGISTRY_USER/$APP_NAME:$CIRCLE_TAG
+      - chmod +x deploy.sh
+      - sh deploy.sh

@@ -2,6 +2,8 @@
 #= require cropper/cropper
 #= require dropzone
 
+Dropzone.autoDiscover = false;
+
 $(document).ready () ->
   images = Array.from(document.getElementsByClassName('cropper-image'))
 
@@ -27,7 +29,6 @@ $(document).ready () ->
 
     $('#image_custom_cropping').attr('checked', 'checked')
 
-  Dropzone.autoDiscover = false;
   if $('#dropzone_upload')[0]
     myDropzone = new Dropzone('div#dropzone_upload',
       url: "#{$('form').attr('action')}/upload_images"

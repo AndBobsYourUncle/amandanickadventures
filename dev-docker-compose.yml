@@ -61,6 +61,19 @@ services:
       - front
       - back
 
+  postgres:
+    image: postgres:10
+    container_name: postgres
+    restart: always
+    volumes:
+      - /var/run/postgresql
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 9999:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD:
+
 volumes:
   data:
     driver: local

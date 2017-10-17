@@ -34,8 +34,9 @@ jobs:
               rm -rf /var/cache/apk/* && \
               apk update && \
               apk upgrade && \
-              apk add bash curl-dev ruby-dev build-base libffi-dev && \
+              apk add bash curl-dev ruby-dev build-base libffi-dev pacman && \
               apk add ruby ruby-io-console ruby-bundler && \
+              pacman -S postgresql-libs \
               rm -rf /var/cache/apk/*
 
       # - run: gem install bundler

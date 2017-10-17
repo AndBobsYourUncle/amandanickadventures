@@ -8,6 +8,9 @@ services:
       - data:/data
     container_name: thumbor
     restart: always
+    networks:
+      - front
+      - back
     ports:
       - 8000:8000
     environment:

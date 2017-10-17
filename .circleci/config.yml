@@ -12,6 +12,62 @@ jobs:
 
       - setup_remote_docker
 
+      # - run: echo 'export PATH=/foo/bin:$PATH' >> $BASH_ENV
+      - run:
+          command: |
+            mkdir -p /usr/local/etc \
+              && { \
+                echo 'install: --no-document'; \
+                echo 'update: --no-document'; \
+              } >> /usr/local/etc/gemrc
+      - run: echo 'export RUBY_MAJOR=2.1' >> $BASH_ENV
+      - run: echo 'export RUBY_VERSION=2.1.10' >> $BASH_ENV
+      - run: echo 'export RUBY_DOWNLOAD_SHA256=5be9f8d5d29d252cd7f969ab7550e31bbb001feb4a83532301c0dd3b5006e148' >> $BASH_ENV
+      - run: echo 'export RUBYGEMS_VERSION=2.6.10' >> $BASH_ENV
+      - run:
+          command: |
+            set -ex \
+              \
+              && buildDeps=' \
+                bison \
+                libgdbm-dev \
+                ruby \
+              ' \
+              && apt-get update \
+              && apt-get install -y --no-install-recommends $buildDeps \
+              && rm -rf /var/lib/apt/lists/* \
+              \
+              && wget -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz" \
+              && echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum -c - \
+              \
+              && mkdir -p /usr/src/ruby \
+              && tar -xJf ruby.tar.xz -C /usr/src/ruby --strip-components=1 \
+              && rm ruby.tar.xz \
+              \
+              && cd /usr/src/ruby \
+              \
+              && { \
+                echo '#define ENABLE_PATH_CHECK 0'; \
+                echo; \
+                cat file.c; \
+              } > file.c.new \
+              && mv file.c.new file.c \
+              \
+              && autoconf \
+              && ./configure --disable-install-doc --enable-shared \
+              && make -j"$(nproc)" \
+              && make install \
+              \
+              && apt-get purge -y --auto-remove $buildDeps \
+              && cd / \
+              && rm -r /usr/src/ruby \
+              \
+              && gem update --system "$RUBYGEMS_VERSION"
+
+      - run: echo 'export BUNDLER_VERSION=1.14.3' >> $BASH_ENV
+
+      - run: gem install bundler --version "$BUNDLER_VERSION"
+
       # Restore bundle cache
       - restore_cache:
           key: rails-demo-{{ checksum "Gemfile.lock" }}

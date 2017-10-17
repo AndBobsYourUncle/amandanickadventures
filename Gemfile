@@ -56,6 +56,8 @@ gem 'ruby-thumbor'
 
 gem 'dropzonejs-rails'
 
+gem 'bigdecimal'
+
 group :development, :test do
   gem 'pry'
 

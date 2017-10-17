@@ -22,7 +22,7 @@ jobs:
               } >> /usr/local/etc/gemrc
       - run: echo 'export RUBY_MAJOR=2.1' >> $BASH_ENV
       - run: echo 'export ENV BUILD_PACKAGES=""' >> $BASH_ENV
-      - run: echo 'export ENV RUBY_PACKAGES="ruby ruby-io-console ruby-bundler"' >> $BASH_ENV
+      - run: echo 'export ENV RUBY_PACKAGES="ruby ruby-io-console ruby-bundler ruby-rdoc"' >> $BASH_ENV
       - run: echo 'export RUBY_VERSION=2.1.10' >> $BASH_ENV
       - run: echo 'export RUBY_DOWNLOAD_SHA256=5be9f8d5d29d252cd7f969ab7550e31bbb001feb4a83532301c0dd3b5006e148' >> $BASH_ENV
       - run: echo 'export RUBYGEMS_VERSION=2.6.10' >> $BASH_ENV

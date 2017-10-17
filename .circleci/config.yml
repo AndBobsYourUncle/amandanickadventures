@@ -35,7 +35,8 @@ jobs:
               apk update && \
               apk upgrade && \
               apk add bash curl-dev ruby-dev build-base libffi-dev libpq postgresql-client postgresql postgresql-contrib postgresql-dev && \
-              apk add ruby ruby-io-console ruby-bundler && \
+              apk add ruby ruby-io-console ruby-bundler ruby-irb ruby-json ruby-rake && \
+              gem install bundler -v "$BUNDLER_VERSION" --no-document && \
               rm -rf /var/cache/apk/*
 
       # - run: curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
@@ -100,7 +101,7 @@ jobs:
       #       set -x
       #       curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
       #       chmod +x /usr/local/bin/docker-compose
-      - run: gem install rdoc
+      # - run: gem install rdoc
       - run: gem install bigdecimal
 
       # Database setup

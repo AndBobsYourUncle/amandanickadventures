@@ -8,7 +8,7 @@ ActiveAdmin.register UserWhitelist do
       whitelist_hash = permitted_params[:user_whitelist]
 
       if whitelist_hash[:fb_profile_photo_url].present?
-        whitelist_hash[:uid] = whitelist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{5})/)[1]
+        whitelist_hash[:uid] = whitelist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{5})/).to_a.last
 
         facebook = Koala::Facebook::API.new(current_user.fb_token)
         whitelist_hash[:name] = facebook.get_object(whitelist_hash[:uid])['name']

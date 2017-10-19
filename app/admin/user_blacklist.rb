@@ -8,7 +8,7 @@ ActiveAdmin.register UserBlacklist do
       blacklist_hash = permitted_params[:user_blacklist]
 
       if blacklist_hash[:fb_profile_photo_url].present?
-        blacklist_hash[:uid] = blacklist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{5})/)[1]
+        blacklist_hash[:uid] = blacklist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{5})/).to_a.last
 
         facebook = Koala::Facebook::API.new(current_user.fb_token)
         blacklist_hash[:name] = facebook.get_object(blacklist_hash[:uid])['name']

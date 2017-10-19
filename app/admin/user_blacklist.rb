@@ -32,7 +32,7 @@ ActiveAdmin.register UserBlacklist do
     selectable_column
 
     column '' do |blacklist|
-      link_to image_tag(blacklist.profile_photo.to_s), admin_user_blacklist_path(blacklist)
+      link_to image_tag(blacklist.profile_photo.to_s, style: 'max-width: 100px;'), admin_user_blacklist_path(blacklist)
     end
 
     column :name do |blacklist|
@@ -84,7 +84,7 @@ ActiveAdmin.register UserBlacklist do
       if f.object.new_record?
         f.input :fb_profile_photo_url, hint: "View the person's FB profile photo, and paste the URL from your browser here."
       else
-        f.input :name, hint: image_tag(f.object.profile_photo.to_s)
+        f.input :name, hint: image_tag(f.object.profile_photo.to_s, style: 'max-width: 100px;')
       end
     end
   end

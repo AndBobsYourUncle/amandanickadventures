@@ -8,14 +8,14 @@ ActiveAdmin.register UserWhitelist do
       whitelist_hash = permitted_params[:user_whitelist]
 
       if whitelist_hash[:fb_profile_photo_url].present?
-        whitelist_hash[:uid] = whitelist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{10})/)[1]
+        whitelist_hash[:uid] = whitelist_hash[:fb_profile_photo_url].match(/(\d+)(?!.*\d{5})/)[1]
 
         facebook = Koala::Facebook::API.new(current_user.fb_token)
         whitelist_hash[:name] = facebook.get_object(whitelist_hash[:uid])['name']
-        whitelist_hash[:profile_photo] = facebook.get_picture_data(whitelist_hash[:uid], type: 'large')['data']['url']
+        whitelist_hash[:profile_photo] = facebook.get_picture_data(whitelist_hash[:uid], type: 'small')['data']['url']
       end
 
-      if resource = UserWhitelist.create(whitelist_hash)
+      if UserWhitelist.create(whitelist_hash)
         redirect_to admin_user_whitelists_path, notice: 'User whitelist successfully created.'
       else
         render :new, notice: 'User whitelist creation wasn\'t successful.'
@@ -32,7 +32,7 @@ ActiveAdmin.register UserWhitelist do
     selectable_column
 
     column '' do |blacklist|
-      link_to image_tag(blacklist.profile_photo.to_s, width: 100), admin_user_blacklist_path(blacklist)
+      link_to image_tag(blacklist.profile_photo.to_s, style: 'max-width: 100px;'), admin_user_blacklist_path(blacklist)
     end
 
     column :name do |whitelist|
@@ -66,6 +66,9 @@ ActiveAdmin.register UserWhitelist do
     columns do
       column do
         attributes_table do
+          row 'profile_picture' do
+            image_tag(whitelist.profile_photo.to_s, style: 'max-width: 100px;')
+          end
           row :name
           row :uid
           row :fb_id
@@ -74,12 +77,15 @@ ActiveAdmin.register UserWhitelist do
     end
   end
 
-
   form do |f|
     actions
 
     inputs 'Details' do
-      f.input :fb_profile_photo_url, hint: "View the person's FB profile photo, and paste the URL from your browser here."
+      if f.object.new_record?
+        f.input :fb_profile_photo_url, hint: "View the person's FB profile photo, and paste the URL from your browser here."
+      else
+        f.input :name, hint: image_tag(f.object.profile_photo.to_s, style: 'max-width: 100px;')
+      end
     end
   end
 end
